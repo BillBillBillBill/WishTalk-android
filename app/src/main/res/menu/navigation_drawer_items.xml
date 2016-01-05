@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="all">
+        <item
+            android:id="@+id/index"
+            android:icon="@drawable/ic_action_location_found_dark"
+            android:title="首页"/>
+
+        <item
+            android:id="@+id/userCenter"
+            android:icon="@drawable/ic_action_location_found_dark"
+            android:title="个人中心"/>
+
+        <item
+            android:id="@+id/wishPool"
+            android:icon="@drawable/ic_action_location_found_dark"
+            android:title="心愿池"/>
+
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_action_location_found_dark"
+            android:title="关于"/>
+
+        <item
+            android:id="@+id/contact"
+            android:icon="@drawable/ic_action_location_found_dark"
+            android:title="联系方式"/>
+    </group>
+
+</menu>
