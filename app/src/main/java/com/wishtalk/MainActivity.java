@@ -105,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 登出， 删除token
+    private void logout() {
+        UserManager userManager = new UserManager(mContext);
+        if (userManager.isLogin) {
+            userManager.delete_token();
+            showSnackbar("注销成功！！！");
+        }
+    }
+
     // 获取验证码
     private void get_check_code(String username) {
         try {
@@ -369,6 +378,8 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 
         userManager = new UserManager(mContext);
+
+        logout();
         if (userManager.isLogin) {
             showSnackbar("用户已登录");
         } else {
