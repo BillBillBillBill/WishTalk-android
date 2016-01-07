@@ -52,6 +52,17 @@ public class WishtalkRestClient {
         client.get(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json", jsonHttpResponseHandler);
     }
 
+    public static void delete(Context mContext, String url, JSONObject jsonObject, JsonHttpResponseHandler jsonHttpResponseHandler) {
+        UserManager userManager = new UserManager(mContext);
+        try {
+            jsonObject.put("token", userManager.get_token());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity stringEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
+        client.delete(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json", jsonHttpResponseHandler);
+    }
+
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }

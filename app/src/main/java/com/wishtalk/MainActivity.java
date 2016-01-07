@@ -25,6 +25,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -365,6 +366,358 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // 发布心愿
+    private void make_wish(String title, String location, String out_time, String content) {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("title", title);
+            jsonObject.put("location", location);
+            jsonObject.put("out_time", out_time);
+            jsonObject.put("content", content);
+
+            WishtalkRestClient.post(mContext, "wish", jsonObject, new JsonHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                    // called when response HTTP status is "200 OK"
+                    Log.i("发布心愿", jsonObject.toString());
+                    showSnackbar("发布心愿成功！！！");
+                    try {
+                        Log.i("发布心愿", jsonObject.getJSONObject("data").get("insert_id").toString());
+                        Log.i("发布心愿", jsonObject.get("stat").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    try {
+                        Log.i("发布心愿", jsonObject.get("err").toString());
+                        Log.i("发布心愿", jsonObject.get("msg").toString());
+                        Log.i("发布心愿", jsonObject.get("stat").toString());
+                        showSnackbar("发布心愿失败！！！");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 获取心愿列表
+    private void get_wish_list() {
+        JSONObject jsonObject = new JSONObject();
+
+        WishtalkRestClient.get(mContext, "wish", jsonObject, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                // called when response HTTP status is "200 OK"
+                Log.i("获取心愿列表", jsonObject.toString());
+                showSnackbar("获取心愿列表成功！！！");
+                try {
+                    JSONArray userData = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < userData.length(); i++) {
+                        JSONObject wish = userData.getJSONObject(i);
+                        Log.i("获取心愿列表", wish.toString());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                try {
+                    Log.i("获取心愿列表", jsonObject.get("err").toString());
+                    Log.i("获取心愿列表", jsonObject.get("msg").toString());
+                    Log.i("获取心愿列表", jsonObject.get("stat").toString());
+                    showSnackbar("获取心愿列表失败！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    // 获取单个心愿详情
+    private void get_wish_by_id(String id) {
+        JSONObject jsonObject = new JSONObject();
+
+        WishtalkRestClient.get(mContext, "wish"+"/"+id, jsonObject, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                // called when response HTTP status is "200 OK"
+                Log.i("获取心愿详情", jsonObject.toString());
+                showSnackbar("获取心愿详情成功！！！");
+                try {
+                    JSONObject userData = jsonObject.getJSONObject("data");
+                    Log.i("获取心愿详情", userData.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                try {
+                    Log.i("获取心愿详情", jsonObject.get("err").toString());
+                    Log.i("获取心愿详情", jsonObject.get("msg").toString());
+                    Log.i("获取心愿详情", jsonObject.get("stat").toString());
+                    showSnackbar("获取心愿详情失败！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    // 操作心愿
+    private void action_on_wish(String id, String action) {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("action", action);
+
+            WishtalkRestClient.put(mContext, "wish"+"/"+id, jsonObject, new JsonHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                    // called when response HTTP status is "200 OK"
+                    Log.i("操作心愿", jsonObject.toString());
+                    showSnackbar("操作心愿成功！！！");
+                    try {
+                        Log.i("操作心愿", jsonObject.getJSONObject("data").get("msg").toString());
+                        Log.i("操作心愿", jsonObject.get("stat").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    try {
+                        Log.i("操作心愿", jsonObject.get("err").toString());
+                        Log.i("操作心愿", jsonObject.get("msg").toString());
+                        Log.i("操作心愿", jsonObject.get("stat").toString());
+                        showSnackbar("发布心愿失败！！！");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 领取（帮助）心愿 权限：非发起者
+    private void take_wish(String id) {
+        action_on_wish(id, "take");
+    }
+
+    // 放弃心愿 权限：非发起者
+    private void giveup_wish(String id) {
+        action_on_wish(id, "giveup");
+    }
+
+    // 完成心愿 权限：发起者
+    private void finish_wish(String id) {
+        action_on_wish(id, "finish");
+    }
+
+    // 取消(关闭)心愿 权限：发起者
+    private void close_wish(String id) {
+        action_on_wish(id, "close");
+    }
+
+    // 评论心愿
+    private void comment_wish(String wish_id, String content) {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("content", content);
+
+            WishtalkRestClient.post(mContext, "wish/comment"+"/"+wish_id, jsonObject, new JsonHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                    // called when response HTTP status is "200 OK"
+                    Log.i("发布心愿评论", jsonObject.toString());
+                    showSnackbar("发布心愿评论成功！！！");
+                    try {
+                        Log.i("发布心愿评论", jsonObject.getJSONObject("data").get("insert_id").toString());
+                        Log.i("发布心愿评论", jsonObject.get("stat").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    try {
+                        Log.i("发布心愿评论", jsonObject.get("err").toString());
+                        Log.i("发布心愿评论", jsonObject.get("msg").toString());
+                        Log.i("发布心愿评论", jsonObject.get("stat").toString());
+                        showSnackbar("发布心愿评论失败！！！");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 获取心愿评论
+    private void get_wish_comment_list(String wish_id) {
+        JSONObject jsonObject = new JSONObject();
+
+        WishtalkRestClient.get(mContext, "wish/comment"+"/"+wish_id, jsonObject, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                // called when response HTTP status is "200 OK"
+                Log.i("获取心愿评论", jsonObject.toString());
+                showSnackbar("获取心愿评论成功！！！");
+                try {
+                    JSONArray userData = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < userData.length(); i++) {
+                        JSONObject wish = userData.getJSONObject(i);
+                        Log.i("获取心愿评论", wish.toString());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                try {
+                    Log.i("获取心愿评论", jsonObject.get("err").toString());
+                    Log.i("获取心愿评论", jsonObject.get("msg").toString());
+                    Log.i("获取心愿评论", jsonObject.get("stat").toString());
+                    showSnackbar("获取心愿评论失败！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    // 删除指定id评论
+    private void delete_wish_comment_by_id(String comment_id) {
+        JSONObject jsonObject = new JSONObject();
+
+        WishtalkRestClient.delete(mContext, "wish/comment"+"/"+comment_id, jsonObject, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                // called when response HTTP status is "200 OK"
+                Log.i("删除心愿评论", jsonObject.toString());
+                showSnackbar("删除心愿评论成功！！！");
+                try {
+                    Log.i("删除心愿评论", jsonObject.get("stat").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                try {
+                    Log.i("删除心愿评论", jsonObject.get("err").toString());
+                    Log.i("删除心愿评论", jsonObject.get("msg").toString());
+                    Log.i("删除心愿评论", jsonObject.get("stat").toString());
+                    showSnackbar("删除心愿评论失败！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    // 对心愿进行点赞
+    private void like_wish(String wish_id) {
+
+        JSONObject jsonObject = new JSONObject();
+
+        WishtalkRestClient.post(mContext, "wish/like"+"/"+wish_id, jsonObject, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                // called when response HTTP status is "200 OK"
+                Log.i("对心愿点赞", jsonObject.toString());
+                showSnackbar("对心愿点赞成功！！！");
+                try {
+                    Log.i("对心愿点赞", jsonObject.get("stat").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                try {
+                    Log.i("对心愿点赞", jsonObject.get("err").toString());
+                    Log.i("对心愿点赞", jsonObject.get("msg").toString());
+                    Log.i("对心愿点赞", jsonObject.get("stat").toString());
+                    showSnackbar("对心愿点赞失败！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    // 对心愿取消点赞
+    private void unlike_wish(String wish_id) {
+        JSONObject jsonObject = new JSONObject();
+
+        WishtalkRestClient.delete(mContext, "wish/like"+"/"+wish_id, jsonObject, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                // called when response HTTP status is "200 OK"
+                Log.i("对心愿取消点赞", jsonObject.toString());
+                showSnackbar("对心愿取消点赞成功！！！");
+                try {
+                    Log.i("对心愿取消点赞", jsonObject.get("stat").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                try {
+                    Log.i("对心愿取消点赞", jsonObject.get("err").toString());
+                    Log.i("对心愿取消点赞", jsonObject.get("msg").toString());
+                    Log.i("对心愿取消点赞", jsonObject.get("stat").toString());
+                    showSnackbar("对心愿取消点赞失败！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -379,19 +732,35 @@ public class MainActivity extends AppCompatActivity {
 
         userManager = new UserManager(mContext);
 
-        logout();
+//        logout();
+//        login("1", "1");
         if (userManager.isLogin) {
             showSnackbar("用户已登录");
         } else {
             showSnackbar("用户尚未登录");
-//            login("test", "test");
+
         }
 //        get_check_code("18819473330");
 //        register("18819473330", "password", "nickname", "561370");
 //        update_user_info("昵称", "男", "年级", "中山大学");
 //        get_forget_check_code("18819473330");
 //        password_reset("18819473330", "fuck", "311864");
+
+//        make_wish("心愿标题", "(111,111)", "", "这是心愿详情啊啊啊");
+        get_wish_list();
         get_user_info();
+        get_wish_by_id("1");
+        get_wish_by_id("2");
+//        get_wish_comment_list("1");
+//        get_wish_comment_list("2");
+//        delete_wish_comment_by_id("1");
+//        comment_wish("1", "这是评论啊红红火火");
+//        comment_wish("2", "ADUGSAiUDGUIWGUO");
+//        finish_wish("3");
+//        finish_wish("4");
+//        finish_wish("5");
+//        finish_wish("6");
+        unlike_wish("2");
     }
 
     private void initToolbar() {
