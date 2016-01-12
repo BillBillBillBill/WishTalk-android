@@ -4,7 +4,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wishtalk.MainActivity">
+    tools:context="com.wishtalk.RegisterActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/rootLayout"
@@ -13,7 +13,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="200dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginStart="@dimen/expanded_toolbar_title_margin_start"
+                app:expandedTitleMarginStart="30dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
@@ -47,11 +47,14 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="20dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
                 android:orientation="vertical">
 
                 <android.support.design.widget.TextInputLayout
@@ -62,7 +65,8 @@
                         android:id="@+id/usernameEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="用户名" />
+                        android:paddingTop="10dp"
+                        android:hint="手机号码" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -76,25 +80,60 @@
                         android:hint="密码" />
                 </android.support.design.widget.TextInputLayout>
 
-                <include layout="@layout/long_content"/>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/nicknameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:hint="昵称" />
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/checkcodeEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:hint="验证码" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/getCheckcodeBtn"
+                        android:textSize="20px"
+                        android:text="获取手机验证码"/>
+
+
+                </LinearLayout>
+
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/registerBtn"
+                    android:text="注册"/>
+
 
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="@dimen/fab_margin_bottom"
-            android:layout_marginRight="@dimen/fab_margin_right"
-            android:src="@drawable/ic_plus"
-            app:borderWidth="0dp"
-            app:fabSize="normal" />
-
     </android.support.design.widget.CoordinatorLayout>
-
     <include layout="@layout/navigation_view"/>
 
 </android.support.v4.widget.DrawerLayout>

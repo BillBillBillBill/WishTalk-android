@@ -11,6 +11,7 @@
     <style name="AppTheme.WithoutActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/mbackground</item>
     </style>
 
 </resources>

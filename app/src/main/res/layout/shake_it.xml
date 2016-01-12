@@ -4,7 +4,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wishtalk.MainActivity">
+    tools:context="com.wishtalk.ShakeItActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/rootLayout"
@@ -13,7 +13,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="180dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginStart="@dimen/expanded_toolbar_title_margin_start"
+                app:expandedTitleMarginStart="30dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
@@ -49,52 +49,27 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/usernameEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="用户名" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/passwordEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="密码" />
-                </android.support.design.widget.TextInputLayout>
-
-                <include layout="@layout/long_content"/>
-
-            </LinearLayout>
+            <TextView
+                android:layout_height="55dp"
+                android:layout_width="fill_parent"
+                android:text="摇一摇"
+                android:textSize="38dp"
+                android:background="@drawable/background"
+                android:layout_marginBottom="5dp"/>
+            <ImageView
+                android:id="@+id/shakeBg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:contentDescription="@null"
+                android:src="@drawable/shake_logo_up" />
 
         </android.support.v4.widget.NestedScrollView>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="@dimen/fab_margin_bottom"
-            android:layout_marginRight="@dimen/fab_margin_right"
-            android:src="@drawable/ic_plus"
-            app:borderWidth="0dp"
-            app:fabSize="normal" />
 
     </android.support.design.widget.CoordinatorLayout>
 
     <include layout="@layout/navigation_view"/>
 
 </android.support.v4.widget.DrawerLayout>
+

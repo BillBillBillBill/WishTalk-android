@@ -3,9 +3,14 @@
 
     <group android:checkableBehavior="all">
         <item
-            android:id="@+id/index"
+            android:id="@+id/wishPool"
             android:icon="@drawable/ic_action_location_found_dark"
-            android:title="首页"/>
+            android:title="心愿池"/>
+
+        <item
+            android:id="@+id/makeWish"
+            android:icon="@drawable/ic_action_location_found_dark"
+            android:title="许愿"/>
 
         <item
             android:id="@+id/userCenter"
@@ -13,9 +18,9 @@
             android:title="个人中心"/>
 
         <item
-            android:id="@+id/wishPool"
+            android:id="@+id/shakeIt"
             android:icon="@drawable/ic_action_location_found_dark"
-            android:title="心愿池"/>
+            android:title="摇一摇"/>
 
         <item
             android:id="@+id/about"
