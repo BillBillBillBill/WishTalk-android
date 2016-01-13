@@ -37,7 +37,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WishPoolActivity extends AppCompatActivity {
+public class SupportedWishActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -68,17 +68,18 @@ public class WishPoolActivity extends AppCompatActivity {
                 .show();
     }
 
-    // 获取心愿列表
-    private void get_wish_list() {
+
+    // 获取个人帮助心愿列表
+    private void get_my_help_wish_list() {
         JSONObject jsonObject = new JSONObject();
 
-        WishtalkRestClient.get(mContext, "wish", jsonObject, new JsonHttpResponseHandler() {
+        WishtalkRestClient.get(mContext, "my_help_wish", jsonObject, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
                 // called when response HTTP status is "200 OK"
-                Log.i("获取心愿列表", jsonObject.toString());
-                showSnackbar("获取心愿列表成功！！！");
+                Log.i("获取个人帮助心愿列表", jsonObject.toString());
+                showSnackbar("获取个人帮助心愿列表成功！！！");
                 try {
                     JSONArray userData = jsonObject.getJSONArray("data");
                     for (int i = 0; i < userData.length(); i++) {
@@ -96,11 +97,11 @@ public class WishPoolActivity extends AppCompatActivity {
                             status = "已关闭";
                         }
                         wishList.add(new Wish(title, time, status, id));
-                        Log.i("获取心愿列表", wish.toString());
+                        wishAdapter = new WishAdapter(mContext, R.layout.wish_item, wishList);
+                        lv.setAdapter(wishAdapter);
+                        Log.i("获取个人帮助心愿列表", wish.toString());
                     }
-                    Log.i("心愿列表长度:", String.valueOf(wishList.size()));
-                    wishAdapter = new WishAdapter(mContext, R.layout.wish_item, wishList);
-                    lv.setAdapter(wishAdapter);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -110,10 +111,10 @@ public class WishPoolActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
                 // called when response HTTP status is "4XX" (eg. 401, 403, 404)
                 try {
-                    Log.i("获取心愿列表", jsonObject.get("err").toString());
-                    Log.i("获取心愿列表", jsonObject.get("msg").toString());
-                    Log.i("获取心愿列表", jsonObject.get("stat").toString());
-                    showSnackbar("获取心愿列表失败！！！");
+                    Log.i("获取个人帮助心愿列表", jsonObject.get("err").toString());
+                    Log.i("获取个人帮助心愿列表", jsonObject.get("msg").toString());
+                    Log.i("获取个人帮助心愿列表", jsonObject.get("stat").toString());
+                    showSnackbar("获取个人帮助心愿列表失败！！！");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -121,35 +122,11 @@ public class WishPoolActivity extends AppCompatActivity {
         });
     }
 
-    /*{
-        "comment_count": 0,
-            "content": "\u8fd9\u662f\u5fc3\u613f\u8be6\u60c5\u554a\u554a\u554a",
-            "create_time": "2016-01-07 17:04:18",
-            "ctr": 0,
-            "finished_time": "",
-            "has_like": false,
-            "helper": "",
-            "id": 14,
-            "likers_count": 0,
-            "location": "(111,111)",
-            "out_time": "2099-01-01 00:00:00",
-            "owner": {
-                 "avatar": "default.jpg",
-                "id": 1,
-                "is_blocked": false,
-                "nickname": "\u8349",
-                "username": "1"
-             },
-        "status": "unfinished",
-            "title": "\u5fc3\u613f\u6807\u9898"
-    }*/
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.wishpool);
+        setContentView(R.layout.supported_wish);
 
         initToolbar();
         initInstances();
@@ -158,7 +135,7 @@ public class WishPoolActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.lv);
         mContext = this;
         userManager = new UserManager(mContext);
-        get_wish_list();
+        get_my_help_wish_list();
         //Log.i("test", wishList.toString());
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -210,7 +187,7 @@ public class WishPoolActivity extends AppCompatActivity {
 
     private void initInstances() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerToggle = new ActionBarDrawerToggle(WishPoolActivity.this, drawerLayout, R.string.hello_world, R.string.hello_world);
+        drawerToggle = new ActionBarDrawerToggle(SupportedWishActivity.this, drawerLayout, R.string.hello_world, R.string.hello_world);
         drawerLayout.setDrawerListener(drawerToggle);
 
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -219,7 +196,7 @@ public class WishPoolActivity extends AppCompatActivity {
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
-        collapsingToolbarLayout.setTitle("心愿池");
+        collapsingToolbarLayout.setTitle("已领取心愿");
     }
 
     @Override

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -49,10 +50,120 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ListView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/lv"/>
+                android:paddingLeft="10dp"
+                android:paddingTop="30dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/userLL"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/wish"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:textSize="20dp"
+                        android:text="个人信息"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/resetLL"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/wish"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:textSize="20dp"
+                        android:text="重置密码"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/launchedWishLL"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/wish"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:textSize="20dp"
+                        android:text="已发布心愿"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/supportedWishLL"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/wish"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:textSize="20dp"
+                        android:text="已领取心愿"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/logoutLL"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/wish"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:textSize="20dp"
+                        android:text="登出"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
         </android.support.v4.widget.NestedScrollView>
 

@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:layout_height="50dp"
+    android:padding="5dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:id="@+id/wishImage"
+        android:src="@drawable/user"/>
+
     <TextView
         android:id="@+id/User"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="哈哈哈哈"
-        android:textSize="20dp"
-        android:layout_marginLeft="10dp"
+        android:layout_height="20dp"
         android:layout_marginBottom="10dp"
-        android:textColor="#ffa4b0" />
-        <TextView
-            android:id="@+id/time"
-            android:textSize="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2016-01-11 20:27:23"
-            android:layout_marginLeft="70dp"
-            android:textColor="#ffa4b0"
-            android:layout_marginBottom="10dp"/>
-    </LinearLayout>
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/wishImage" />
 
     <TextView
-        android:id="@+id/content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:text="正好"
-        android:textSize="25dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="5dp" />
-</LinearLayout>
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/time"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/User"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/content"/>
+
+</RelativeLayout>

@@ -2,8 +2,11 @@ package com.wishtalk;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -16,12 +19,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -34,63 +46,15 @@ public class MakeWishActivity extends AppCompatActivity {
     CoordinatorLayout rootLayout;
     private Context mContext;
 
-    private EditText title;
-    private EditText content;
-    private EditText outTime;
-    private EditText location;
-    private Button yes;
-    private Button no;
+    EditText titleEditText, contentEditText;
+    Button makeWishBtn;
 
-    private String Title=null;
-    private String Content=null;
-    private String OutTime=null;
-    private String Location=null;
+    // get the location
+    LocationManager locationManager;
+    String provider;
 
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.makewish);
-
-        mContext = this;
-
-        initToolbar();
-        initInstances();
-        initNavigationView();
-
-        title=(EditText)findViewById(R.id.title);
-        content=(EditText)findViewById(R.id.content);
-        outTime=(EditText)findViewById(R.id.outTime);
-        location=(EditText)findViewById(R.id.loc);
-        yes=(Button)findViewById(R.id.yes);
-        no=(Button)findViewById(R.id.no);
-
-        Title=title.getText().toString();
-        Content=content.getText().toString();
-        OutTime=outTime.getText().toString();
-        Location=location.getText().toString();
-
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                make_wish(Title,Location,OutTime,Content);
-            }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Title=null;
-                Content=null;
-                OutTime=null;
-                Location=null;
-                Intent intent = new Intent();
-                intent.setClass(MakeWishActivity.this, UserCenterActivity.class);
-                startActivity(intent);
-            }
-        });
-
-    }
+    // get time
+    DatePicker datePicker;
 
     // 发布心愿
     private void make_wish(String title, String location, String out_time, String content) {
@@ -135,6 +99,93 @@ public class MakeWishActivity extends AppCompatActivity {
         }
     }
 
+    // 得到经纬度
+    private String getLocation() {
+
+        String location = "";
+
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        List<String> providerList = locationManager.getProviders(true);
+
+        Log.d("Test", "" + providerList.get(0).toString());
+
+        if (providerList.contains(LocationManager.GPS_PROVIDER)) {
+            provider = LocationManager.GPS_PROVIDER;
+        } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
+            provider = LocationManager.NETWORK_PROVIDER;
+        } else {
+            Toast.makeText(this, "No location provider to use", Toast.LENGTH_SHORT).show();
+        }
+
+        try {
+            Location loc = locationManager.getLastKnownLocation(provider);
+
+            if (loc != null) {
+                String longtitude = "" + loc.getLongitude();
+                String latitude = "" + loc.getLatitude();
+                location = "(" + longtitude + "," + latitude + ")";
+                Log.i("location", location);
+            }
+
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        return location;
+    }
+
+    private String getTime() {
+        String mYear = "" + datePicker.getYear();
+        String mMonth, mDay;
+        String time = "2099-01-01 00:00:00"; // default
+
+        if (datePicker.getMonth() < 10) {
+            mMonth = "0" + datePicker.getMonth();
+        } else {
+            mMonth = "" + datePicker.getMonth();
+        }
+
+        if (datePicker.getDayOfMonth() < 10) {
+            mDay = "0" + datePicker.getDayOfMonth();
+        } else {
+            mDay = "" + datePicker.getDayOfMonth();
+        }
+
+        time = mYear + "-" + mMonth + "-" + mDay + " " +  "00:00::00";
+        Log.i("test", time);
+        return time;
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.makewish);
+
+        mContext = this;
+
+        initToolbar();
+        initInstances();
+        initNavigationView();
+
+        titleEditText = (EditText) findViewById(R.id.titleEditText);
+        contentEditText = (EditText) findViewById(R.id.contentEditText);
+        makeWishBtn = (Button) findViewById(R.id.makeWishBtn);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+
+        final String location = getLocation();
+        final String time = getTime();
+
+        makeWishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                make_wish(titleEditText.getText().toString(), location, time,
+                        contentEditText.getText().toString());
+            }
+        });
+
+    }
+
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -176,7 +227,7 @@ public class MakeWishActivity extends AppCompatActivity {
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
-        collapsingToolbarLayout.setTitle("心愿池");
+        collapsingToolbarLayout.setTitle("许愿");
     }
 
     // 弹出snackbar 用于提示

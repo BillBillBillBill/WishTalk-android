@@ -1,6 +1,5 @@
 package com.wishtalk;
 
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -19,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -35,7 +35,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class UserCenterActivity extends AppCompatActivity {
+public class UserInfoActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -50,7 +50,9 @@ public class UserCenterActivity extends AppCompatActivity {
 
     NavigationView mNavigationView;
 
-    LinearLayout userLL, resetLL, launchedWishLL, supportedWishLL, logoutLL;
+    Button returnBtn, updateBtn;
+
+    EditText nicknameEditText, genderEditText, gradeEditText, schoolEditText;
 
     // 弹出snackbar 用于提示
     public void showSnackbar(String text) {
@@ -74,10 +76,99 @@ public class UserCenterActivity extends AppCompatActivity {
     }
 
 
+    // 更新用户信息
+    private void update_user_info(String nickname, String gender, String grade, String school) {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("nickname", nickname);
+            jsonObject.put("grade", grade);
+            jsonObject.put("gender", gender);
+            jsonObject.put("school", school);
+
+            WishtalkRestClient.put(mContext, "user", jsonObject, new JsonHttpResponseHandler() {
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                    // called when response HTTP status is "200 OK"
+                    Log.i("更新用户信息", jsonObject.toString());
+                    showSnackbar("更新用户信息成功！！！");
+                    try {
+                        Log.i("更新用户信息", jsonObject.getJSONObject("data").get("msg").toString());
+                        Log.i("更新用户信息", jsonObject.get("stat").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    try {
+                        Log.i("更新用户信息", jsonObject.get("err").toString());
+                        Log.i("更新用户信息", jsonObject.get("msg").toString());
+                        Log.i("更新用户信息", jsonObject.get("stat").toString());
+                        showSnackbar("更新用户信息失败！！！");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 获取用户信息
+    private void get_user_info() {
+        JSONObject jsonObject = new JSONObject();
+
+        WishtalkRestClient.get(mContext, "user", jsonObject, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                // called when response HTTP status is "200 OK"
+                Log.i("获取用户信息", jsonObject.toString());
+                showSnackbar("获取用户信息成功！！！");
+                try {
+                    JSONObject userData = jsonObject.getJSONObject("data");
+                    Log.i("获取用户信息", userData.get("gender").toString());
+                    Log.i("获取用户信息", userData.get("grade").toString());
+                    Log.i("获取用户信息", userData.get("nickname").toString());
+                    Log.i("获取用户信息", userData.get("school").toString());
+                    Log.i("获取用户信息", userData.get("username").toString());
+                    Log.i("获取用户信息", userData.get("user_id").toString());
+                    Log.i("获取用户信息", jsonObject.get("stat").toString());
+                    nicknameEditText.setText(userData.get("nickname").toString());
+                    genderEditText.setText(userData.get("gender").toString());
+                    gradeEditText.setText(userData.get("grade").toString());
+                    schoolEditText.setText(userData.get("school").toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                try {
+                    Log.i("获取用户信息", jsonObject.get("err").toString());
+                    Log.i("获取用户信息", jsonObject.get("msg").toString());
+                    Log.i("获取用户信息", jsonObject.get("stat").toString());
+                    showSnackbar("获取用户信息失败！！！");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_center);
+        setContentView(R.layout.user_info);
 
         initToolbar();
         initInstances();
@@ -88,78 +179,35 @@ public class UserCenterActivity extends AppCompatActivity {
 
         userManager = new UserManager(mContext);
 
-        if (!userManager.isLogin) {
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            startActivity(intent);
-        }
+        nicknameEditText = (EditText) findViewById(R.id.nicknameEditText);
+        genderEditText = (EditText) findViewById(R.id.genderEditText);
+        gradeEditText = (EditText) findViewById(R.id.gradeEditText);
+        schoolEditText = (EditText) findViewById(R.id.schoolEditText);
 
-        userLL = (LinearLayout) findViewById(R.id.userLL);
-        userLL.setOnClickListener(new View.OnClickListener() {
+        get_user_info();
+
+        updateBtn = (Button) findViewById(R.id.updateBtn);
+        updateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserCenterActivity.this, UserInfoActivity.class);
+                update_user_info(nicknameEditText.getText().toString(), genderEditText.getText().toString(),
+                        gradeEditText.getText().toString(), schoolEditText.getText().toString());
+            }
+        });
+
+        returnBtn = (Button) findViewById(R.id.returnBtn);
+        returnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserInfoActivity.this, UserCenterActivity.class);
                 startActivity(intent);
             }
         });
 
-        resetLL = (LinearLayout) findViewById(R.id.resetLL);
-        resetLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserCenterActivity.this, ForgetActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        launchedWishLL = (LinearLayout) findViewById(R.id.launchedWishLL);
-        launchedWishLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserCenterActivity.this, LaunchedWishActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        supportedWishLL = (LinearLayout) findViewById(R.id.supportedWishLL);
-        supportedWishLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserCenterActivity.this, SupportedWishActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        logoutLL = (LinearLayout) findViewById(R.id.logoutLL);
-        logoutLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-                if (!userManager.isLogin) {
-                    Intent intent = new Intent(mContext, LoginActivity.class);
-                    startActivity(intent);
-                }
-            }
-        });
 
 
-//        get_check_code("18819473330");
-//        register("18819473330", "password", "nickname", "561370");
-//        update_user_info("昵称", "男", "年级", "中山大学");
-//        get_forget_check_code("18819473330");
-//        password_reset("18819473330", "fuck", "311864");
-
-//        make_wish("心愿标题", "(111,111)", "", "这是心愿详情啊啊啊");
 
 
-//        get_wish_comment_list("1");
-//        get_wish_comment_list("2");
-//        delete_wish_comment_by_id("1");
-//        comment_wish("1", "这是评论啊红红火火");
-//        comment_wish("2", "ADUGSAiUDGUIWGUO");
-//        finish_wish("3");
-//        finish_wish("4");
-//        finish_wish("5");
-//        finish_wish("6");
     }
 
     private void initToolbar() {
@@ -169,7 +217,7 @@ public class UserCenterActivity extends AppCompatActivity {
 
     private void initInstances() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerToggle = new ActionBarDrawerToggle(UserCenterActivity.this, drawerLayout, R.string.hello_world, R.string.hello_world);
+        drawerToggle = new ActionBarDrawerToggle(UserInfoActivity.this, drawerLayout, R.string.hello_world, R.string.hello_world);
         drawerLayout.setDrawerListener(drawerToggle);
 
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -178,7 +226,7 @@ public class UserCenterActivity extends AppCompatActivity {
         rootLayout = (CoordinatorLayout) findViewById(R.id.rootLayout);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
-        collapsingToolbarLayout.setTitle("个人中心");
+        collapsingToolbarLayout.setTitle("个人信息");
     }
 
     private void initNavigationView() {

@@ -233,13 +233,6 @@ public class ForgetActivity extends AppCompatActivity {
             public void onClick(View v) {
                 password_reset(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString(), checkcodeEditText.getText().toString());
-                // 自动登录
-                login(usernameEditText.getText().toString(), passwordEditText.getText().toString());
-                if(userManager.isLogin){
-                    showSnackbar("登录成功");
-                    Intent intent = new Intent(ForgetActivity.this, WishPoolActivity.class);
-                    startActivity(intent);
-                }
             }
         });
 

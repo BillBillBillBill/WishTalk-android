@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:id="@+id/loginBtn"
-                    android:text="登录"/>
+                    android:text="重置密码"/>
 
             </LinearLayout>
 

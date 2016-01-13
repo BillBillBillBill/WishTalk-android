@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        LinearLayout imageListView;
+        RelativeLayout imageListView;
 
         Comment comment= getItem(position);
         String userName = comment.getUsername();
@@ -28,13 +29,12 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         String content=comment.getContent();
 
         if (convertView == null) {
-            imageListView = new LinearLayout(getContext());
+            imageListView = new RelativeLayout(getContext());
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             inflater.inflate(resource, imageListView, true);
         } else {
-            imageListView = (LinearLayout)convertView;
+            imageListView = (RelativeLayout)convertView;
         }
-
 
         TextView textView1 = (TextView)imageListView.findViewById(R.id.User);
         TextView textView2 = (TextView)imageListView.findViewById(R.id.time);
@@ -45,8 +45,6 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 
         return imageListView;
     }
-
-
 
 }
 

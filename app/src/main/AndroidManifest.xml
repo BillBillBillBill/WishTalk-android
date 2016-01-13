@@ -28,7 +28,7 @@
         <activity android:name=".WishPoolActivity"
             android:label="@string/app_name"/>
 
-        <activity android:name=".MakeWishActivity"
+        <activity android:name=".UserCenterActivity"
             android:label="@string/app_name"/>
 
         <activity android:name=".ShakeItActivity"
@@ -36,7 +36,22 @@
 
         <activity android:name=".WishActivity"
             android:label="@string/app_name"/>
+
+        <activity android:name=".MakeWishActivity"
+            android:label="@string/app_name"/>
+
+        <activity android:name=".UserInfoActivity"
+            android:label="@string/app_name"/>
+
+        <activity android:name=".LaunchedWishActivity"
+            android:label="@string/app_name"/>
+
+        <activity android:name=".SupportedWishActivity"
+            android:label="@string/app_name"/>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 </manifest>
