@@ -27,7 +27,7 @@ public class WishtalkRestClient {
             e.printStackTrace();
         }
         StringEntity stringEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
-        client.post(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json", jsonHttpResponseHandler);
+        client.post(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json; charset=utf-8", jsonHttpResponseHandler);
     }
 
     public static void put(Context mContext, String url, JSONObject jsonObject, JsonHttpResponseHandler jsonHttpResponseHandler) {
@@ -49,7 +49,7 @@ public class WishtalkRestClient {
             e.printStackTrace();
         }
         StringEntity stringEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
-        client.get(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json", jsonHttpResponseHandler);
+        client.get(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json; charset=utf-8", jsonHttpResponseHandler);
     }
 
     public static void delete(Context mContext, String url, JSONObject jsonObject, JsonHttpResponseHandler jsonHttpResponseHandler) {
@@ -60,7 +60,7 @@ public class WishtalkRestClient {
             e.printStackTrace();
         }
         StringEntity stringEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
-        client.delete(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json", jsonHttpResponseHandler);
+        client.delete(mContext, getAbsoluteTokenUrl(url, mContext), stringEntity, "application/json; charset=utf-8", jsonHttpResponseHandler);
     }
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

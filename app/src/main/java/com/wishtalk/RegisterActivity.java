@@ -7,6 +7,7 @@ import android.preference.PreferenceActivity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -42,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     ActionBarDrawerToggle drawerToggle;
 
     CoordinatorLayout rootLayout;
+    NavigationView mNavigationView;
 
     public UserManager userManager;
     Context mContext;
@@ -163,6 +165,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         initToolbar();
         initInstances();
+        initNavigationView();
 
         mContext = this;
         usernameEditText = (EditText) findViewById(R.id.usernameEditText);
@@ -216,6 +219,27 @@ public class RegisterActivity extends AppCompatActivity {
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
         collapsingToolbarLayout.setTitle("心愿说");
+    }
+
+    private void initNavigationView() {
+        mNavigationView = (NavigationView) findViewById(R.id.navigation);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                String title = String.valueOf(item.getTitle());
+                Intent next_intent;
+                // 通过点击项进行跳转
+                if (title.equals("心愿池")) {
+                    next_intent = new Intent(mContext, WishPoolActivity.class);
+                    startActivity(next_intent);
+                } else if (title.equals("许愿")) {
+                    showSnackbar("请先登录");
+                } else if (title.equals("个人中心")) {
+                    showSnackbar("请先登录");
+                }
+                return true;
+            }
+        });
     }
 
     @Override

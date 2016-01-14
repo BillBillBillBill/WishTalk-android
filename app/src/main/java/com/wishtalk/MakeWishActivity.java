@@ -151,7 +151,7 @@ public class MakeWishActivity extends AppCompatActivity {
             mDay = "" + datePicker.getDayOfMonth();
         }
 
-        time = mYear + "-" + mMonth + "-" + mDay + " " +  "00:00::00";
+        time = mYear + "-" + mMonth + "-" + mDay + " " +  "00:00:00";
         Log.i("test", time);
         return time;
     }

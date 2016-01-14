@@ -90,6 +90,8 @@ public class WishPoolActivity extends AppCompatActivity {
 
                         if (status.equals("unfinished")) {
                             status = "求实现";
+                        } else if (status.equals("finishing")) {
+                            status = "完成中";
                         } else if (status.equals("finished")) {
                             status = "已完成";
                         } else if (status.equals("closed")) {

@@ -44,7 +44,7 @@ public class WishActivity extends AppCompatActivity {
 
     public UserManager userManager;
 
-    TextView wishTitle, ownerName, wishStatus, wishContent, outTime, flag;
+    TextView wishTitle, ownerName, wishStatus, wishContent, outTime, flag, locationText;
     Button takeBtn, giveUpBtn, finishBtn, closeBtn, submitBtn;
     ImageButton heart;
 
@@ -76,6 +76,7 @@ public class WishActivity extends AppCompatActivity {
         wishContent = (TextView) findViewById(R.id.wishContent);
         flag = (TextView) findViewById(R.id.flag);
         outTime = (TextView) findViewById(R.id.outTime);
+        locationText = (TextView) findViewById(R.id.locationText);
 
 
         takeBtn = (Button) findViewById(R.id.takeBtn);
@@ -167,12 +168,18 @@ public class WishActivity extends AppCompatActivity {
                     JSONObject wish = jsonObject.getJSONObject("data");
                     wishTitle.setText(wish.get("title").toString());
                     wishContent.setText(wish.get("content").toString());
+                    locationText.setText(wish.get("location").toString());
                     String status = wish.get("status").toString();
                     if (status.equals("unfinished")) {
+
                         status = "求实现";
+                    } else if (status.equals("finishing")) {
+                        status = "完成中";
                     } else if (status.equals("finished")) {
+
                         status = "已完成";
                     } else if (status.equals("closed")) {
+
                         status = "已关闭";
                     }
                     wishStatus.setText(status);
@@ -288,6 +295,10 @@ public class WishActivity extends AppCompatActivity {
                     try {
                         Log.i("操作心愿", jsonObject.getJSONObject("data").get("msg").toString());
                         Log.i("操作心愿", jsonObject.get("stat").toString());
+                        Bundle myBundle = getIntent().getExtras();
+                        Intent intent_second = new Intent(mContext, WishActivity.class);
+                        intent_second.putExtras(myBundle);
+                        startActivity(intent_second);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -348,6 +359,10 @@ public class WishActivity extends AppCompatActivity {
                     try {
                         Log.i("发布心愿评论", jsonObject.getJSONObject("data").get("insert_id").toString());
                         Log.i("发布心愿评论", jsonObject.get("stat").toString());
+                        Bundle myBundle = getIntent().getExtras();
+                        Intent intent_second = new Intent(mContext, WishActivity.class);
+                        intent_second.putExtras(myBundle);
+                        startActivity(intent_second);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
